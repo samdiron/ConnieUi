@@ -1,0 +1,3 @@
+[submodule "Connie"]
+	path = Connie
+	url = https://github.com/samdiron/Connie.git
