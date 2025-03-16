@@ -15,7 +15,11 @@ pub fn Navbar() -> Element {
                 "Home"
             }
             Link {
-                to: Route::Blog { id: 1 },
+                to: Route::LogIn {} ,
+                "Login"
+            }
+            Link {
+                to: Route::Blog { id: 2 },
                 "Blog"
             }
         }

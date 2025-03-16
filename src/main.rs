@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 
 use components::Navbar;
-use views::{Blog, Home};
+use views::{Blog, Home, LogIn};
 
 mod components;
 mod views;
@@ -9,6 +9,8 @@ mod views;
 #[derive(Debug, Clone, Routable, PartialEq)]
 #[rustfmt::skip]
 enum Route {
+    #[route("/login")]
+    LogIn {},
     #[layout(Navbar)]
     #[route("/")]
     Home {},
