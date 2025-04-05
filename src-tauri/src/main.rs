@@ -2,5 +2,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    connieui_lib::run()
+    connie_ui_lib::run()
 }
