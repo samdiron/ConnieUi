@@ -16,6 +16,11 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 export default function App() {
+  document.documentElement.classList.toggle(
+    "dark",
+    localStorage.theme === "dark" ||
+      (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches),
+  );
   return (
     <SidebarProvider>
       <AppSidebar />
