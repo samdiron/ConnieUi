@@ -1,8 +1,21 @@
+mod connie;
+
+
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
 fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
+    format!("Hello, {}! You're a brat", name)
 }
+
+
+
+
+
+
+
+
+
+
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {

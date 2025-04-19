@@ -18,6 +18,9 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 tauri-build = { version = "2", features = [] }
 
 [dependencies]
+tcp = { path = "../Connie/tcp/" }
+lib_db = { path = "../Connie/lib_db/" }
+common_lib = { path = "../Connie/common_lib/" }
 tauri = { version = "2", features = [] }
 tauri-plugin-opener = "2"
 serde = { version = "1", features = ["derive"] }
