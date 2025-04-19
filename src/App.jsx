@@ -27,15 +27,15 @@ export default function App() {
     localStorage.theme === "dark" ||
       (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches),
   );
-
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
-
-
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
-  }
+  //
+  // const [greetMsg, setGreetMsg] = useState("");
+  // const [name, setName] = useState("");
+  //
+  //
+  // async function greet() {
+  //   // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
+  //   setGreetMsg(await invoke("greet", { name }));
+  // }
 
 
 
@@ -51,25 +51,25 @@ export default function App() {
         </header>
 
 
-    <div class="bg-amber-400 flex rounded-2xl w-fit h-fit">
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          console.log("change")
-          greet()
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-        <p>{{greetMsg}}</p>
-      </form>
-    </div>
+    {/* <div class="bg-amber-400 flex rounded-2xl w-fit h-fit"> */}
+    {/**/}
+    {/*   <form */}
+    {/*     className="row" */}
+    {/*     onSubmit={(e) => { */}
+    {/*       e.preventDefault(); */}
+    {/*       console.log("change") */}
+    {/*       greet() */}
+    {/*     }} */}
+    {/*   > */}
+    {/*     <input */}
+    {/*       id="greet-input" */}
+    {/*       onChange={(e) => setName(e.currentTarget.value)} */}
+    {/*       placeholder="Enter a name..." */}
+    {/*     /> */}
+    {/*     <button type="submit">Greet</button> */}
+    {/*     <p>{{greetMsg}}</p> */}
+    {/*   </form> */}
+    {/* </div> */}
 
         {/* <p>{ "hell" }</p> */}
         {/* <div className="flex flex-1 flex-col gap-4 p-4 pt-0"> */}
