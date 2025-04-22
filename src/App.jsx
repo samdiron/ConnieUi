@@ -1,5 +1,4 @@
 import "./index.css";
-
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -19,7 +18,7 @@ import {
 import { invoke } from "@tauri-apps/api/core";
 import { useState } from "react";
 
-
+import Media from "./pages/Media";
 
 export default function App() {
   document.documentElement.classList.toggle(
@@ -27,16 +26,14 @@ export default function App() {
     localStorage.theme === "dark" ||
       (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches),
   );
-  //
-  // const [greetMsg, setGreetMsg] = useState("");
-  // const [name, setName] = useState("");
-  //
-  //
-  // async function greet() {
-  //   // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-  //   setGreetMsg(await invoke("greet", { name }));
-  // }
 
+  const [greetMsg, setGreetMsg] = useState("");
+  const [name, setName] = useState("");
+
+  async function greet() {
+    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
+    setGreetMsg(await invoke("greet", { name }));
+  }
 
 
   return (
@@ -49,37 +46,35 @@ export default function App() {
             <Separator orientation="vertical" className="mr-2 h-4" />
           </div>
         </header>
+        
+        <div>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            greet();
+          }}
+        >
+          <input
+            id="greet-input"
+            onChange={(e) => setName(e.currentTarget.value)}
+            placeholder="Enter a name..."
+          />
+          <button type="submit">Greet</button>
+        </form>
+        <p>: {greetMsg}</p>
+        </div>
+
+        <Media/>
 
 
-    {/* <div class="bg-amber-400 flex rounded-2xl w-fit h-fit"> */}
-    {/**/}
-    {/*   <form */}
-    {/*     className="row" */}
-    {/*     onSubmit={(e) => { */}
-    {/*       e.preventDefault(); */}
-    {/*       console.log("change") */}
-    {/*       greet() */}
-    {/*     }} */}
-    {/*   > */}
-    {/*     <input */}
-    {/*       id="greet-input" */}
-    {/*       onChange={(e) => setName(e.currentTarget.value)} */}
-    {/*       placeholder="Enter a name..." */}
-    {/*     /> */}
-    {/*     <button type="submit">Greet</button> */}
-    {/*     <p>{{greetMsg}}</p> */}
-    {/*   </form> */}
-    {/* </div> */}
-
-        {/* <p>{ "hell" }</p> */}
-        {/* <div className="flex flex-1 flex-col gap-4 p-4 pt-0"> */}
-        {/*   <div className="grid auto-rows-min gap-4 md:grid-cols-3"> */}
-        {/*     <div className="aspect-video rounded-xl bg-muted/50" /> */}
-        {/*     <div className="aspect-video rounded-xl bg-muted/50" /> */}
-        {/*     <div className="aspect-video rounded-xl bg-muted/50" /> */}
-        {/*   </div> */}
-        {/*   <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" /> */}
-        {/* </div> */}
+        {/* <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+            <div className="aspect-video rounded-xl bg-muted/50" />
+            <div className="aspect-video rounded-xl bg-muted/50" />
+            <div className="aspect-video rounded-xl bg-muted/50" />
+          </div>
+          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
+        </div> */}
       </SidebarInset>
     </SidebarProvider>
   )
