@@ -1,5 +1,8 @@
 mod connie;
 
+pub use connie::db::media;
+
+
 
 #[tauri::command]
 fn greet(name: &str) -> String {

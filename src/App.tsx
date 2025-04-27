@@ -18,7 +18,6 @@ import {
 import { invoke } from "@tauri-apps/api/core";
 import { useState } from "react";
 
-import Media from "./pages/Media";
 
 export default function App() {
   document.documentElement.classList.toggle(
@@ -63,8 +62,6 @@ export default function App() {
         </form>
         <p>: {greetMsg}</p>
         </div>
-
-        <Media/>
 
 
         {/* <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
