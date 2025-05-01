@@ -1,5 +1,3 @@
-pub mod model;
-pub use connie::db::media;
 
 
 
