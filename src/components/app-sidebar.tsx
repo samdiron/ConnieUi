@@ -50,24 +50,24 @@ const data = {
   ],
   navMain: [
     {
-      title: "Playground",
+      title: "Terminal",
       url: "#",
       icon: SquareTerminal,
       isActive: true,
-      items: [
-        {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
-      ],
+      // items: [
+    //     {
+    //       title: "History",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Starred",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Settings",
+    //       url: "#",
+    //     },
+    //   ],
     },
     {
       title: "Models",
