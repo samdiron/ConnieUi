@@ -1,18 +1,22 @@
-use std::io::Result;
 use std::sync::LazyLock;
 use std::sync::Mutex;
 
 use common_lib::tokio;
-use lib_db::sqlite::get_sqlite_conn;
-use lib_db::sqlite::sqlite_host::SqliteHost;
-use lib_db::sqlite::sqlite_media::SqliteMedia;
-use lib_db::sqlite::sqlite_user::SqliteUser;
-use lib_db::types::SqlitePool;
-use lib_db::inner::{query, Row};
-use serde::Serialize;
-use serde::Deserialize;
+// use serde::Serialize;
+// use serde::Deserialize;
 
-use lib_db::escape_user_input; 
+use lib_db::inner::{
+    sqlite::{
+        get_sqlite_conn,
+        sqlite_host::SqliteHost,
+        sqlite_user::SqliteUser,
+        sqlite_media::SqliteMedia,
+    },
+    types::SqlitePool,
+    escape_user_input,
+    sqlx::{Result, query, Row},
+
+};
 
 
 
@@ -51,33 +55,49 @@ async fn login(
     username: String,
     server_name: String,
     host_name: String,
-) -> Result<(SqliteUser, SqliteHost)> {
+) -> (SqliteUser, SqliteHost) {
     let pool = DB_POOL.lock().unwrap().clone();
-    let is_host = get_server(&server_name, &host_name, &pool).await;
-    if is_host.is_ok() {
-        let host = is_host.unwrap();
-        let username = escape_user_input(&username);
-        let sql = format!(" SELECT * FROM user WHERE username = '{username}' AND host = '{}' ", &host.cpid);
-        let res = query(&sql).fetch_one(&pool).await;
-        if res.is_ok() {
-            let name: String = res.get("name");
-            let cpid: String = res.get("cpid");
-            let host: String = res.get("host");
-            let email: String = res.get("email");
-            let usrname: String = res.get("usrname");
-            let user = SqliteUser {
-                name,
-                host,
-                cpid,
-                email,
-                usrname
-            };
-            Ok((user, host))
-
-        }else {};
-    }else {}
-
-    
+    let host = get_server(&server_name, &host_name, &pool).await;
+    let username = escape_user_input(&username);
+    let host = if host.is_err() {
+        SqliteHost {
+            name: "NULL".to_owned(),
+            cpid: "NULL".to_owned(),
+            host: "NULL".to_owned(),
+            port: 0,
+            pub_ip: "NULL".to_owned(),
+            pri_ip: "NULL".to_owned(),
+        }
+    } else {
+        host.unwrap()
+    };
+    let sql = format!(" SELECT * FROM user WHERE username = '{username}' AND host = '{}' ", &host.cpid);
+    let res = query(&sql).fetch_one(&pool).await;
+    let user = if res.is_ok() {
+        let res = res.unwrap();
+        let name: String = res.get("name");
+        let cpid: String = res.get("cpid");
+        let in_host: String = res.get("host");
+        let email: String = res.get("email");
+        let usrname: String = res.get("usrname");
+        let user = SqliteUser {
+            name,
+            host: in_host,
+            cpid,
+            email,
+            usrname
+        };
+        user
+    } else {
+        SqliteUser {
+            name: "NULL".to_owned(),
+            host: "NULL".to_owned(),
+            cpid: "NULL".to_owned(),
+            email: "NULL".to_owned(),
+            usrname: "NULL".to_owned(),
+        }
+    };
+    (user, host)
 }
 
 
@@ -85,7 +105,7 @@ async fn get_server(
     server_name: &String,
     host_name: &String,
     pool: &SqlitePool
-) -> lib_db::inner::Result<SqliteHost> {
+) -> Result<SqliteHost> {
     let name = escape_user_input(server_name);
     let host = escape_user_input(host_name);
     let sql = format!(" SELECT * FROM host WHERE name = '{name}' AND host = '{host}' ;");
@@ -107,7 +127,6 @@ async fn get_server(
         pri_ip,
     };
     Ok(host)
-        
 }
 
 
@@ -148,15 +167,6 @@ async fn list_media(user_cpid: String) -> Vec<SqliteMedia> {
 
 
 
-#[derive(Serialize, Deserialize)]
-struct User {
-    name: String,
-    username: String,
-    passwd: String,
-    email: String,
-    cpid: String
-}
-
 
 
 
@@ -167,6 +177,7 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             set_db_path,
             list_media,
+            login,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
