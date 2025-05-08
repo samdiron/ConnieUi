@@ -20,22 +20,28 @@ use lib_db::inner::{
 
 
 
+const DB_POOL: LazyLock<Mutex<SqlitePool>>  = LazyLock::new(||{
+    let rt = tokio::runtime::Runtime::new().unwrap();
+
+    let pool = rt.block_on(async {
+    
+        let res = get_sqlite_conn(
+            &"/opt/Connie/conf/.connieDB.sqlite".to_owned()
+        ).await.unwrap();
+        res
+    });
+    let res = pool;
+    Mutex::new(res)
+});
 
 
-const DB_POOL: LazyLock<Mutex<SqlitePool>>  = LazyLock::new(||
-    {
-        let rt = tokio::runtime::Runtime::new().unwrap();
-        
-        let pool = rt.block_on(async move {
-        
-            let binding = get_sqlite_conn(
-                &"/opt/Connie/conf/.connieDB.sqlite".to_owned()
-            ).await.unwrap();
-            binding
-        } );
-        Mutex::new(pool)
-    }
-);
+async fn get_conn_wrapper() -> SqlitePool {
+    
+    let res = get_sqlite_conn(
+        &"/opt/Connie/conf/.connieDB.sqlite".to_owned()
+    ).await.unwrap();
+    res
+}
 
 
 
@@ -132,7 +138,8 @@ async fn get_server(
 
 #[tauri::command]
 async fn list_media(user_cpid: String) -> Vec<SqliteMedia> {
-    let pool = DB_POOL.lock().unwrap().clone();
+    println!("list_media function got called");
+    let pool = get_conn_wrapper().await;
     let cpid = escape_user_input(&user_cpid);
     let sql = format!(" SELECT * FROM media WHERE cpid = '{cpid}' ;" );
     let res = query(&sql).fetch_all(&pool).await.unwrap();
