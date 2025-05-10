@@ -18,6 +18,7 @@ import {
 import { invoke } from "@tauri-apps/api/core";
 import { useState } from "react";
 
+import MediaList from './pages/MediaList.tsx';
 
 export default function App() {
   document.documentElement.classList.toggle(
@@ -46,23 +47,8 @@ export default function App() {
           </div>
         </header>
         
-        <div>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            greet();
-          }}
-        >
-          <input
-            id="greet-input"
-            onChange={(e) => setName(e.currentTarget.value)}
-            placeholder="Enter a name..."
-          />
-          <button type="submit">Greet</button>
-        </form>
-        <p>: {greetMsg}</p>
-        </div>
-
+       
+      <MediaList />
 
         {/* <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
           <div className="grid auto-rows-min gap-4 md:grid-cols-3">
