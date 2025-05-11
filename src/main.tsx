@@ -7,8 +7,9 @@ import Login from "./pages/login.tsx";
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <main >
-      <App />
+    <main>
+      {/* <App /> */}
+      <Login />
 
     </main>
 );

@@ -1,5 +1,4 @@
 import "../index.css";
-// import { useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import React from 'react';
 import { useState, useEffect } from 'react';
@@ -29,20 +28,21 @@ function MediaList() {
     }
     fetchMedia();
   }, []);
-  // let media: Media[] = await invoke<Media[]>("list_media", {userCpid});
-  // let msg: String[] = ["cunt", "bitch"];
 
   return (
 <>
-<div>
-  <button className="bg-blue-500" onClick={addMore} >button</button>
-  <ul id="list" className="space-y-2 flex flex-col">
-    <h1>{userCpid}</h1>
+<div className="p-2 " >
+  <div id="list" className="space-y-2 flex flex-col">
+    <h1 className="text-amber-400 bg-black w-fit" >{userCpid}</h1>
      { media?.map(med => (
-      <li className="bg-amber-400 rounded-lg " >| {med.name} | </li>
+      <div>
+        <p className="bg-amber-400 rounded-lg w-fit" >| {med.name} |</p>
+        <p className="bg-amber-400 rounded-lg w-fit" >| {med.size} |</p>
+        <p className="bg-amber-400 rounded-lg w-fit" >| {med.checksum} |</p>
+      </div>
       ))
      }
-  </ul>
+  </div>
 </div>
 </>
   ) 
